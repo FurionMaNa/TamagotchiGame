@@ -9,5 +9,6 @@ public class RoomClass {
 
     public static void drawRoom(Graphics g,Image room){
         g.drawImage(room,0,0,WIDTH_WINDOW, HIGHT_WINDOW,null);
+        InterfaceBarClass.Draw(g);
     }
 }

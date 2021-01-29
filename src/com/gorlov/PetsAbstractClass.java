@@ -6,19 +6,29 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class PetsAbstractClass implements PetsInterface{
+public abstract class PetsAbstractClass implements PetsInterface {
 
+    protected final Integer LEFT = 0;
+    protected final Integer RIGHT = 1;
+    protected final Integer FRONT = 2;
     private String name;
     private Integer satiety = 100;
     private Integer drowsiness = 100;
     private Integer bore = 0;
     protected Graphics g;
-    protected Integer x=10;
-    protected Integer y=430;
+    protected Integer x = 10;
+    protected Integer y = 430;
     protected static Image room;
     protected static Integer clickX;
     protected static Integer clickY;
     private static boolean mousePress = false;
+    protected static Image fallImageRight;
+    protected static Image fallImageLeft;
+    protected static Image fallImageFront;
+    protected static Image carryingImageRight;
+    protected static Image carryingImageLeft;
+    protected static Image carryingImageFront;
+    protected Integer direction = RIGHT;
 
 
     public PetsAbstractClass(String name, Graphics g) {
@@ -82,14 +92,39 @@ public abstract class PetsAbstractClass implements PetsInterface{
     public abstract void Draw(int logic);
 
 
-    public void click(Integer x, Integer y){
-        this.clickX = x;
-        this.clickY = y;
-        this.mousePress = true;
+    public void click(Integer x, Integer y) {
+        clickX = x;
+        clickY = y;
+        mousePress = !mousePress;
+
     }
 
     public static boolean isMousePress() {
         return mousePress;
+    }
+
+    @Override
+    public synchronized void fall() {
+        int oldY = this.y;
+        while (this.y < 430) {
+            RoomClass.drawRoom(g, room);
+            y += 5;
+            if (direction.equals(LEFT)) {
+                g.drawImage(fallImageLeft, x, y, 100, 100, null);
+            } else if (direction.equals(RIGHT)) {
+                g.drawImage(fallImageRight, x, y, 100, 100, null);
+            } else if (direction.equals(FRONT)) {
+                g.drawImage(fallImageFront, x, y, 100, 100, null);
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if (oldY < 330) {
+            InterfaceBarClass.hp -= 20;
+        }
     }
 
     @Override
@@ -104,19 +139,33 @@ public abstract class PetsAbstractClass implements PetsInterface{
 
     @Override
     public void move(Integer x, Integer y) {
-        //if(mousePress ){
-
-            System.out.println(x + " " + y);
+        if (mousePress) {
             this.x = x;
             this.y = y;
-
-       // }
+        }
     }
 
     @Override
-    public void walking(Graphics g, Image[] image, Integer offset){
+    public void carryOver() {
+        RoomClass.drawRoom(g, room);
+        if (direction.equals(LEFT)) {
+            g.drawImage(carryingImageLeft, x, y, 100, 100, null);
+        } else if (direction.equals(RIGHT)) {
+            g.drawImage(carryingImageRight, x, y, 100, 100, null);
+        } else if (direction.equals(FRONT)) {
+            g.drawImage(carryingImageFront, x, y, 100, 100, null);
+        }
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void walking(Graphics g, Image[] image, Integer offset) {
         for (Object o : image) {
-            RoomClass.drawRoom(g,room);
+            RoomClass.drawRoom(g, room);
             x += offset;
             g.drawImage((Image) o, x, y, 100, 100, null);
             try {
