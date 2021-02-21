@@ -22,6 +22,8 @@ public class Main extends JFrame implements Runnable {
     private static Graphics g;
     private static Image room;
     public static Thread t;
+    private static Thread statisticThreead;
+    private static Boolean gameAlive = true;
 
     public Main() {
         try {
@@ -49,6 +51,38 @@ public class Main extends JFrame implements Runnable {
         pets = new DogClass("Жужа", panelDraw.getGraphics());
         t = new Thread(this);
         t.start();
+        statisticThreead = new Thread(new Runnable() {
+
+            private Integer tickHunger = 0;
+            private Integer tickSleep = 0;
+
+            @Override
+            public void run() {
+                while (true){
+                    if(tickHunger == 50){
+                        InterfaceBarClass.hunger-=20;
+                        tickHunger = 0;
+                    }
+                    if(tickSleep == 100){
+                        InterfaceBarClass.sleep-=20;
+                        tickSleep = 0;
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    tickHunger++;
+                    tickSleep++;
+                    if (InterfaceBarClass.hunger == 0 || InterfaceBarClass.hp == 0 || InterfaceBarClass.sleep == 0){
+                        gameAlive = false;
+                        JOptionPane.showMessageDialog(frame, "Ваш питомец помер! В следующий раз будьте внимательнее");
+                        break;
+                    }
+                }
+            }
+        });
+        statisticThreead.start();
     }
 
     public static void main(String[] args) {
@@ -58,12 +92,13 @@ public class Main extends JFrame implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (gameAlive) {
+            if (t.isInterrupted()) break;
             if (pets != null) {
                 if (!PetsAbstractClass.isMousePress() && pets.y < 430) {
                     pets.fall();
                 }
-                if(!PetsAbstractClass.isMousePress()) {
+                if (!PetsAbstractClass.isMousePress()) {
                     if (countAct >= new Random().nextInt(20) + 10) {
                         logic = new Random().nextInt(300);
                         countAct = 0;
@@ -72,7 +107,6 @@ public class Main extends JFrame implements Runnable {
                     } else if (pets.getX() >= Main.WIDTH_WINDOW - 120) {
                         logic = 100;
                     }
-                    System.out.println(logic);
                     pets.Draw(logic);
                 } else {
                     pets.carryOver();

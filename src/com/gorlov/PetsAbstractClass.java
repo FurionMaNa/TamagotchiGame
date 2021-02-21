@@ -117,7 +117,7 @@ public abstract class PetsAbstractClass implements PetsInterface {
                 g.drawImage(fallImageFront, x, y, 100, 100, null);
             }
             try {
-                Thread.sleep(100);
+                Thread.sleep(17);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -156,7 +156,7 @@ public abstract class PetsAbstractClass implements PetsInterface {
             g.drawImage(carryingImageFront, x, y, 100, 100, null);
         }
         try {
-            Thread.sleep(250);
+            Thread.sleep(17);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
