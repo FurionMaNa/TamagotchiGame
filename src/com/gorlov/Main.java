@@ -16,13 +16,11 @@ public class Main extends JFrame implements Runnable {
     private final static Integer WIDTH_WINDOW = 600;
     private final static Integer HIGHT_WINDOW = 600;
     private static PetsAbstractClass pets;
-    private static JPanel panelDraw;
     private static int countAct = 0;
     private static int logic = 0;
     private static Graphics g;
     private static Image room;
     public static Thread t;
-    private static Thread statisticThreead;
     private static Boolean gameAlive = true;
 
     public Main() {
@@ -33,7 +31,7 @@ public class Main extends JFrame implements Runnable {
         }
         JFrame frame = new JFrame("Игра тамагочи");
         frame.setResizable(false);
-        panelDraw = new PanelDraw();
+        JPanel panelDraw = new PanelDraw();
         JButton eatButton = new JButton("Кормить");
         eatButton.setLocation(0, HIGHT_WINDOW - 100);
         eatButton.setSize(100, 100);
@@ -47,20 +45,20 @@ public class Main extends JFrame implements Runnable {
         pets = new DogClass("Жужа", panelDraw.getGraphics());
         t = new Thread(this);
         t.start();
-        statisticThreead = new Thread(new Runnable() {
+        Thread statisticThreead = new Thread(new Runnable() {
 
             private Integer tickHunger = 0;
             private Integer tickSleep = 0;
 
             @Override
             public void run() {
-                while (true){
-                    if(tickHunger == 50){
-                        InterfaceClass.hunger-=20;
+                while (true) {
+                    if (tickHunger == 50) {
+                        InterfaceClass.hunger -= 20;
                         tickHunger = 0;
                     }
-                    if(tickSleep == 100){
-                        InterfaceClass.sleep-=20;
+                    if (tickSleep == 100) {
+                        InterfaceClass.sleep -= 20;
                         tickSleep = 0;
                     }
                     try {
@@ -70,7 +68,7 @@ public class Main extends JFrame implements Runnable {
                     }
                     tickHunger++;
                     tickSleep++;
-                    if (InterfaceClass.hunger == 0 || InterfaceClass.hp == 0 || InterfaceClass.sleep == 0){
+                    if (InterfaceClass.hunger == 0 || InterfaceClass.hp == 0 || InterfaceClass.sleep == 0) {
                         gameAlive = false;
                         JOptionPane.showMessageDialog(frame, "Ваш питомец помер! В следующий раз будьте внимательнее");
                         break;
@@ -86,29 +84,30 @@ public class Main extends JFrame implements Runnable {
         new Main();
     }
 
+    private int choiceDirecrion(){
+        if (countAct >= new Random().nextInt(20) + 10) {
+            countAct = 0;
+            logic = new Random().nextInt(300);
+        } else if (pets.getX() < 10) {
+            logic = 0;
+        } else if (pets.getX() >= Main.WIDTH_WINDOW - 120) {
+            logic = 100;
+        }
+        return logic;
+    }
+
     @Override
     public void run() {
         while (gameAlive) {
-            if (t.isInterrupted()) break;
-            if (pets != null) {
-                if (!PetsAbstractClass.isMousePress() && pets.y < 430) {
-                    pets.fall();
-                }
-                if (!PetsAbstractClass.isMousePress()) {
-                    if (countAct >= new Random().nextInt(20) + 10) {
-                        logic = new Random().nextInt(300);
-                        countAct = 0;
-                    } else if (pets.getX() < 10) {
-                        logic = 0;
-                    } else if (pets.getX() >= Main.WIDTH_WINDOW - 120) {
-                        logic = 100;
-                    }
-                    pets.Draw(logic);
-                } else {
-                    pets.carryOver();
-                }
-                countAct++;
+            if (!PetsAbstractClass.isMousePress() && pets.y < 430) {
+                pets.fall();
             }
+            if (!PetsAbstractClass.isMousePress()) {
+                pets.Draw(choiceDirecrion());
+            } else {
+                pets.carryOver();
+            }
+            countAct++;
         }
     }
 

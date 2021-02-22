@@ -41,12 +41,17 @@ public class DogClass extends PetsAbstractClass implements PetsInterface{
         if(logic<100){
             walking(g, imagesWalkRight, 10);
             direction = RIGHT;
-        } else if (logic>=100 && logic<200) {
+        } else if (logic<200) {
             walking(g, imagesWalkLeft, -10);
             direction = LEFT;
-        } else if (logic>=200){
+        } else {
             RoomClass.drawRoom(g,room);
             g.drawImage((Image) front, this.x,this.y,100,100,null);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             direction = FRONT;
         }
     }

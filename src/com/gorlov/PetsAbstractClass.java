@@ -108,7 +108,7 @@ public abstract class PetsAbstractClass implements PetsInterface {
     }
 
     @Override
-    public synchronized void fall() {
+    public void fall() {
         int oldY = this.y;
         while (this.y < 430) {
             RoomClass.drawRoom(g, room);
@@ -169,11 +169,11 @@ public abstract class PetsAbstractClass implements PetsInterface {
     @Override
     public void walking(Graphics g, Image[] image, Integer offset) {
         for (Object o : image) {
-            RoomClass.drawRoom(g, room);
             x += offset;
+            RoomClass.drawRoom(g, room);
             g.drawImage((Image) o, x, y, 100, 100, null);
             try {
-                Thread.sleep(250);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
