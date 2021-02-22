@@ -95,7 +95,11 @@ public abstract class PetsAbstractClass implements PetsInterface {
     public void click(Integer x, Integer y) {
         clickX = x;
         clickY = y;
-        mousePress = !mousePress;
+        if (!mousePress && x > this.x && y > this.y && x < this.x + 100 && y < this.y + 100) {
+            mousePress = !mousePress;
+        } else {
+            mousePress = false;
+        }
 
     }
 
@@ -123,7 +127,7 @@ public abstract class PetsAbstractClass implements PetsInterface {
             }
         }
         if (oldY < 330) {
-            InterfaceBarClass.hp -= 20;
+            InterfaceClass.hp -= 20;
         }
     }
 

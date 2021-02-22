@@ -14,7 +14,7 @@ import java.util.Random;
 public class Main extends JFrame implements Runnable {
 
     private final static Integer WIDTH_WINDOW = 600;
-    private final static Integer HIGHT_WINDOW = 700;
+    private final static Integer HIGHT_WINDOW = 600;
     private static PetsAbstractClass pets;
     private static JPanel panelDraw;
     private static int countAct = 0;
@@ -32,7 +32,6 @@ public class Main extends JFrame implements Runnable {
             e.printStackTrace();
         }
         JFrame frame = new JFrame("Игра тамагочи");
-        JPanel panel = new JPanel();
         frame.setResizable(false);
         panelDraw = new PanelDraw();
         JButton eatButton = new JButton("Кормить");
@@ -41,10 +40,7 @@ public class Main extends JFrame implements Runnable {
         JButton sleepButton = new JButton("Спать");
         eatButton.setLocation(0, HIGHT_WINDOW - 100);
         eatButton.setSize(100, 100);
-        panel.add(panelDraw);
-        panel.add(sleepButton);
-        panel.add(eatButton);
-        frame.add(panel);
+        frame.add(panelDraw);
         frame.setPreferredSize(new Dimension(WIDTH_WINDOW, HIGHT_WINDOW));
         frame.pack();
         frame.setVisible(true);
@@ -60,11 +56,11 @@ public class Main extends JFrame implements Runnable {
             public void run() {
                 while (true){
                     if(tickHunger == 50){
-                        InterfaceBarClass.hunger-=20;
+                        InterfaceClass.hunger-=20;
                         tickHunger = 0;
                     }
                     if(tickSleep == 100){
-                        InterfaceBarClass.sleep-=20;
+                        InterfaceClass.sleep-=20;
                         tickSleep = 0;
                     }
                     try {
@@ -74,7 +70,7 @@ public class Main extends JFrame implements Runnable {
                     }
                     tickHunger++;
                     tickSleep++;
-                    if (InterfaceBarClass.hunger == 0 || InterfaceBarClass.hp == 0 || InterfaceBarClass.sleep == 0){
+                    if (InterfaceClass.hunger == 0 || InterfaceClass.hp == 0 || InterfaceClass.sleep == 0){
                         gameAlive = false;
                         JOptionPane.showMessageDialog(frame, "Ваш питомец помер! В следующий раз будьте внимательнее");
                         break;

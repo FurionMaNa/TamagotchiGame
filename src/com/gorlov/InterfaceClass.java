@@ -2,7 +2,7 @@ package com.gorlov;
 
 import java.awt.*;
 
-public class InterfaceBarClass {
+public class InterfaceClass {
 
     public static Integer hp = 100;
     public static Integer hunger = 100;
@@ -30,7 +30,14 @@ public class InterfaceBarClass {
         g.fillRect(450,20,sleep, 20);
         g.setColor(Color.black);
         g.drawRect(450,20,100, 20);
-
+        /*ITEM TABLE*/
+        g.setColor(Color.WHITE);
+        int x = 50;
+        int sizeItem = 40;
+        for (int i = 1; i <= 10; i++) {
+            g.drawRect(x + i * sizeItem, 520, sizeItem, sizeItem);
+            g.drawRect(x + i * sizeItem + 3, 520 + 3, sizeItem - 6, sizeItem - 6);
+        }
     }
 
 }
