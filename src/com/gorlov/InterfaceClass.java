@@ -32,9 +32,9 @@ public class InterfaceClass {
         g.drawRect(450,20,100, 20);
         /*ITEM TABLE*/
         g.setColor(Color.WHITE);
-        int x = 50;
+        int x = 150;
         int sizeItem = 40;
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 5; i++) {
             g.drawRect(x + i * sizeItem, 520, sizeItem, sizeItem);
             g.drawRect(x + i * sizeItem + 3, 520 + 3, sizeItem - 6, sizeItem - 6);
         }

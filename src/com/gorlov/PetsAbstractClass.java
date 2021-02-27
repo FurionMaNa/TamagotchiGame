@@ -92,15 +92,20 @@ public abstract class PetsAbstractClass implements PetsInterface {
     public abstract void Draw(int logic);
 
 
-    public void click(Integer x, Integer y) {
+    public Integer click(Integer x, Integer y, int selectItem) {
         clickX = x;
         clickY = y;
         if (!mousePress && x > this.x && y > this.y && x < this.x + 100 && y < this.y + 100) {
-            mousePress = !mousePress;
+            if (selectItem == 0){ //
+                mousePress = !mousePress;
+                return 0;
+            } else {
+                return 1;
+            }
         } else {
             mousePress = false;
+            return 2;
         }
-
     }
 
     public static boolean isMousePress() {

@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Main extends JFrame implements Runnable {
@@ -19,9 +20,11 @@ public class Main extends JFrame implements Runnable {
     private static int countAct = 0;
     private static int logic = 0;
     private static Graphics g;
-    private static Image room;
+    public static Image room;
     public static Thread t;
     private static Boolean gameAlive = true;
+    private static MouseEvent event;
+    public static ArrayList<ObjectClass> items = new ArrayList<>();
 
     public Main() {
         try {
@@ -38,6 +41,11 @@ public class Main extends JFrame implements Runnable {
         JButton sleepButton = new JButton("Спать");
         eatButton.setLocation(0, HIGHT_WINDOW - 100);
         eatButton.setSize(100, 100);
+        items.add(new ObjectClass("Кость", room, room, g));
+        items.add(new ObjectClass("Кость", room, room, g));
+        items.add(new ObjectClass("Кость", room, room, g));
+        items.add(new ObjectClass("Кость", room, room, g));
+        items.add(new ObjectClass("Кость", room, room, g));
         frame.add(panelDraw);
         frame.setPreferredSize(new Dimension(WIDTH_WINDOW, HIGHT_WINDOW));
         frame.pack();
@@ -113,6 +121,9 @@ public class Main extends JFrame implements Runnable {
 
     private static class PanelDraw extends JPanel {
 
+        private int selectItem = 0;
+        private boolean drag = true;
+
         public PanelDraw() {
             setPreferredSize(new Dimension(Main.WIDTH_WINDOW, Main.HIGHT_WINDOW));
             addMouseMotionListener(new MouseMotionListener() {
@@ -130,7 +141,29 @@ public class Main extends JFrame implements Runnable {
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    pets.click(e.getX(), e.getY());
+                    switch (pets.click(e.getX(), e.getY(), selectItem)) {
+                        case 1:
+                            //todo передача объекта псу
+                            break;
+                        case 2:
+                            selectItem = 0;
+                            drag = false;
+                            break;
+                    }
+                    for (int i = 1; i <= 5; i++) {
+                        if(e.getX() > 150 + i * 40 && e.getY() > 520 && e.getX() < 190 + i * 40 && e.getY() < 560) {
+                            selectItem = i;
+                            drag = true;
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    while (drag) {
+                                        items.get(selectItem).move(e.getX(), e.getY());
+                                    }
+                                }
+                            }).start();
+                        }
+                    }
                 }
 
                 @Override

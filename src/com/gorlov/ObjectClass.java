@@ -2,12 +2,13 @@ package com.gorlov;
 
 import java.awt.*;
 
-public class ObjectClass {
+public class ObjectClass{
 
     private String intemHint;
     private Image itemFromPanel;
     private Image itemFromRoom;
     private Graphics g;
+    private static boolean mousePress = false;
 
     public ObjectClass(String intemHint, Image itemFromPanel, Image itemFromRoom, Graphics g) {
         this.intemHint = intemHint;
@@ -23,4 +24,14 @@ public class ObjectClass {
     private void Draw(){
 
     }
+
+    public void move(Integer x, Integer y) {
+        if (mousePress) {
+        }
+    }
+
+    public static boolean isMousePress() {
+        return mousePress;
+    }
+
 }
