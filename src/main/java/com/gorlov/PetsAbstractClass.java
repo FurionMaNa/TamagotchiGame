@@ -28,8 +28,12 @@ public abstract class PetsAbstractClass implements PetsInterface {
     protected static Image carryingImageRight;
     protected static Image carryingImageLeft;
     protected static Image carryingImageFront;
+    protected static Image sleepImageRight;
+    protected static Image sleepImageLeft;
+    public static Image ball;
     protected Integer direction = RIGHT;
-
+    private boolean game = false;
+    private boolean sleep = false;
 
     public PetsAbstractClass(String name, Graphics g) {
         this.name = name;
@@ -39,6 +43,14 @@ public abstract class PetsAbstractClass implements PetsInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isSleep() {
+        return sleep;
+    }
+
+    public void setSleep(boolean sleep) {
+        this.sleep = sleep;
     }
 
     public String getName() {
@@ -89,22 +101,23 @@ public abstract class PetsAbstractClass implements PetsInterface {
         this.y = y;
     }
 
+    public boolean isGame() {
+        return game;
+    }
+
+    public void setGame(boolean game) {
+        this.game = game;
+    }
+
     public abstract void Draw(int logic);
 
-
-    public Integer click(Integer x, Integer y, int selectItem) {
+    public void click(Integer x, Integer y) {
         clickX = x;
         clickY = y;
         if (!mousePress && x > this.x && y > this.y && x < this.x + 100 && y < this.y + 100) {
-            if (selectItem == 0){ //
-                mousePress = !mousePress;
-                return 0;
-            } else {
-                return 1;
-            }
+            mousePress = !mousePress;
         } else {
             mousePress = false;
-            return 2;
         }
     }
 
@@ -132,18 +145,24 @@ public abstract class PetsAbstractClass implements PetsInterface {
             }
         }
         if (oldY < 330) {
-            InterfaceClass.hp -= 20;
+            InterfaceClass.setHp(-20);
         }
     }
 
     @Override
-    public void eat() {
-
-    }
-
-    @Override
     public void sleep() {
-
+        game = false;
+        RoomClass.drawRoom(g, room);
+        if (direction.equals(LEFT)) {
+            g.drawImage(sleepImageLeft, x, y, 100, 100, null);
+        } else {
+            g.drawImage(sleepImageRight, x, y, 100, 100, null);
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -174,9 +193,19 @@ public abstract class PetsAbstractClass implements PetsInterface {
     @Override
     public void walking(Graphics g, Image[] image, Integer offset) {
         for (Object o : image) {
+            if (sleep) {
+                break;
+            }
             x += offset;
             RoomClass.drawRoom(g, room);
             g.drawImage((Image) o, x, y, 100, 100, null);
+            if (game) {
+                if (direction.equals(RIGHT)) {
+                    g.drawImage((Image) ball, x + 90, y + 50, 30, 30, null);
+                } else {
+                    g.drawImage((Image) ball, x - 10, y + 50, 30, 30, null);
+                }
+            }
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
