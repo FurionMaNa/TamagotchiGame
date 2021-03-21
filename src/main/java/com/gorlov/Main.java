@@ -4,9 +4,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,29 +23,49 @@ public class Main extends JFrame implements Runnable {
     public static Thread t;
     private static Boolean gameAlive = true;
     public static ArrayList<ObjectClass> items = new ArrayList<>();
+    private Panel panel;
+    private String name;
+    private Boolean dog;
+    public JPanel panelDraw;
 
     public Main() throws IOException {
         room = ImageIO.read(new FileImageInputStream(new File("resources/room.png")));
         JFrame frame = new JFrame("Игра тамагочи");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        JPanel panelDraw = new PanelDraw();
-        frame.add(panelDraw);
-        frame.setPreferredSize(new Dimension(WIDTH_WINDOW, HIGHT_WINDOW));
-        frame.pack();
-        frame.setVisible(true);
-        JsonData jsonData = ConverterJSON.toJavaObject();
-        InterfaceClass.hp = jsonData.hp;
-        InterfaceClass.sleep = jsonData.sleep;
-        InterfaceClass.hunger = jsonData.hunger;
-        int countTick = (int) ((new Date().getTime() - jsonData.lastSave.getTime()) / 100000);
-        if (InterfaceClass.sleep - countTick * 20 <= 0 || InterfaceClass.hunger - countTick * 20 <= 0) {
-            JOptionPane.showMessageDialog(frame, "Пока вы отсутствовали ваш питомец помер! Начните заново");
-            InterfaceClass.hp = 100;
-            InterfaceClass.hunger = 100;
-            InterfaceClass.sleep = 100;
+        panelDraw = new PanelDraw();
+        try {
+            JsonData jsonData = ConverterJSON.toJavaObject();
+            InterfaceClass.hp = jsonData.hp;
+            InterfaceClass.sleep = jsonData.sleep;
+            InterfaceClass.hunger = jsonData.hunger;
+            dog = jsonData.dog;
+            int countTick = (int) ((new Date().getTime() - jsonData.lastSave.getTime()) / 100000);
+            if (InterfaceClass.sleep - countTick * 20 <= 0 || InterfaceClass.hunger - countTick * 20 <= 0) {
+                JOptionPane.showMessageDialog(frame, "Пока вы отсутствовали ваш питомец помер! Начните заново");
+                newGame(frame);
+                InterfaceClass.hp = 100;
+                InterfaceClass.hunger = 100;
+                InterfaceClass.sleep = 100;
+            } else {
+                startGame(frame);
+            }
+        } catch (Exception e) {
+            newGame(frame);
         }
+        frame.setVisible(true);
+    }
+
+    public void startGame(JFrame frame) throws IOException {
+        frame.setPreferredSize(new Dimension(WIDTH_WINDOW, HIGHT_WINDOW));
+        frame.add(panelDraw);
+        frame.pack();
         PetsAbstractClass.ball = ImageIO.read(new FileImageInputStream(new File("resources/ball.png")));
-        pets = new DogClass("Жужа", panelDraw.getGraphics());
+        if (dog) {
+            pets = new DogClass(name, panelDraw.getGraphics());
+        } else {
+            pets = new CatClass(name, panelDraw.getGraphics());
+        }
         items.add(new ObjectClass("Кость", ImageIO.read(new FileImageInputStream(new File("resources/bone.png"))), panelDraw.getGraphics(), 10));
         items.add(new ObjectClass("Курица", ImageIO.read(new FileImageInputStream(new File("resources/chicken.png"))), panelDraw.getGraphics(), 20));
         items.add(new ObjectClass("Рыба", ImageIO.read(new FileImageInputStream(new File("resources/fish.png"))), panelDraw.getGraphics(), 15));
@@ -88,7 +106,7 @@ public class Main extends JFrame implements Runnable {
                         break;
                     }
                     JsonData jsonData = new JsonData();
-                    jsonData.dog = true;
+                    jsonData.dog = dog;
                     jsonData.hp = InterfaceClass.hp;
                     jsonData.name = pets.getName();
                     jsonData.lastSave = new Date();
@@ -105,12 +123,63 @@ public class Main extends JFrame implements Runnable {
         statisticThreead.start();
     }
 
+    public void newGame(JFrame frame) {
+        frame.setPreferredSize(new Dimension(200, 150));
+        panel = new Panel();
+        panel.setLayout(null);
+        JLabel nameAnimal = new JLabel("Укажи имя питомца:");
+        nameAnimal.setBounds(5, 5, 160, 15);
+        panel.add(nameAnimal);
+        JTextField textAnimal = new JTextField();
+        textAnimal.setBounds(5, 25, 175, 25);
+        panel.add(textAnimal);
+        JLabel changeAnimal = new JLabel("Выберите питомца: ");
+        changeAnimal.setBounds(5, 55, 160, 15);
+        JButton gameDog = new JButton("Собака");
+        gameDog.setBounds(5, 75, 83, 25);
+        panel.add(gameDog);
+        JButton gameCat = new JButton("Кот");
+        gameCat.setBounds(92, 75, 85, 25);
+        panel.add(gameCat);
+        panel.add(changeAnimal);
+        frame.add(panel);
+        frame.pack();
+        gameCat.addActionListener(e -> {
+            if (textAnimal.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Вы не ввели имя питомца!!!");
+            } else {
+                name = textAnimal.getText();
+                dog = false;
+                frame.remove(panel);
+                try {
+                    startGame(frame);
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+        gameDog.addActionListener(e -> {
+            if (textAnimal.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Вы не ввели имя питомца!!!");
+            } else {
+                name = textAnimal.getText();
+                dog = true;
+                frame.remove(panel);
+                try {
+                    startGame(frame);
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+    }
+
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(false);
         try {
             new Main();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -156,7 +225,6 @@ public class Main extends JFrame implements Runnable {
             addMouseMotionListener(new MouseMotionListener() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
-
                 }
 
                 @Override

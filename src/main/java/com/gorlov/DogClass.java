@@ -27,7 +27,7 @@ public class DogClass extends PetsAbstractClass implements PetsInterface{
             carryingImageFront = ImageIO.read(new FileImageInputStream(new File("resources/DogCarryingFront.png")));
             imagesWalkRight[0] = ImageIO.read(new FileImageInputStream(new File("resources/DogRight1.png")));
             imagesWalkRight[1] = ImageIO.read(new FileImageInputStream(new File("resources/DogRight2.png")));
-            imagesWalkRight[2] = ImageIO.read(new FileImageInputStream(new File("resources/DogRight1.png")));
+            imagesWalkRight[2] = ImageIO.read(new FileImageInputStream(new File("resources/DogRight3.png")));
             imagesWalkRight[3] = ImageIO.read(new FileImageInputStream(new File("resources/DogRight4.png")));
             imagesWalkLeft[0] = ImageIO.read(new FileImageInputStream(new File("resources/DogLeft1.png")));
             imagesWalkLeft[1] = ImageIO.read(new FileImageInputStream(new File("resources/DogLeft2.png")));
@@ -49,7 +49,9 @@ public class DogClass extends PetsAbstractClass implements PetsInterface{
         } else {
             RoomClass.drawRoom(g,room);
             g.drawImage((Image) front, this.x,this.y,100,100,null);
-            g.drawImage((Image) ball, x+30, y, 30, 30, null);
+            if (this.isGame()) {
+                g.drawImage((Image) ball, x + 30, y, 30, 30, null);
+            }
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
