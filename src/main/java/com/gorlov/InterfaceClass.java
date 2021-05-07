@@ -9,6 +9,12 @@ public class InterfaceClass {
     public static Integer hunger = 100;
     public static Integer sleep = 100;
 
+    public static void refresh() {
+        hp = 100;
+        hunger = 100;
+        sleep = 100;
+    }
+
     public static void setHp(Integer change) {
         if (hp + change > 100){
             hp = 100;

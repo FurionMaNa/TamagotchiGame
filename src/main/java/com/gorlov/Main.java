@@ -33,7 +33,6 @@ public class Main extends JFrame implements Runnable {
         JFrame frame = new JFrame("Игра тамагочи");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        panelDraw = new PanelDraw();
         try {
             JsonData jsonData = ConverterJSON.toJavaObject();
             InterfaceClass.hp = jsonData.hp;
@@ -44,9 +43,7 @@ public class Main extends JFrame implements Runnable {
             if (InterfaceClass.sleep - countTick * 20 <= 0 || InterfaceClass.hunger - countTick * 20 <= 0) {
                 JOptionPane.showMessageDialog(frame, "Пока вы отсутствовали ваш питомец помер! Начните заново");
                 newGame(frame);
-                InterfaceClass.hp = 100;
-                InterfaceClass.hunger = 100;
-                InterfaceClass.sleep = 100;
+                InterfaceClass.refresh();
             } else {
                 startGame(frame);
             }
@@ -58,6 +55,7 @@ public class Main extends JFrame implements Runnable {
 
     public void startGame(JFrame frame) throws IOException {
         frame.setPreferredSize(new Dimension(WIDTH_WINDOW, HIGHT_WINDOW));
+        panelDraw = new PanelDraw();
         frame.add(panelDraw);
         frame.pack();
         PetsAbstractClass.ball = ImageIO.read(new FileImageInputStream(new File("resources/ball.png")));
@@ -66,6 +64,7 @@ public class Main extends JFrame implements Runnable {
         } else {
             pets = new CatClass(name, panelDraw.getGraphics());
         }
+        gameAlive = true;
         items.add(new ObjectClass("Кость", ImageIO.read(new FileImageInputStream(new File("resources/bone.png"))), panelDraw.getGraphics(), 10));
         items.add(new ObjectClass("Курица", ImageIO.read(new FileImageInputStream(new File("resources/chicken.png"))), panelDraw.getGraphics(), 20));
         items.add(new ObjectClass("Рыба", ImageIO.read(new FileImageInputStream(new File("resources/fish.png"))), panelDraw.getGraphics(), 15));
@@ -118,13 +117,17 @@ public class Main extends JFrame implements Runnable {
                         e.printStackTrace();
                     }
                 }
+                newGame(frame);
             }
         });
         statisticThreead.start();
     }
 
+
     public void newGame(JFrame frame) {
+        frame.remove(panelDraw);
         frame.setPreferredSize(new Dimension(200, 150));
+        InterfaceClass.refresh();
         panel = new Panel();
         panel.setLayout(null);
         JLabel nameAnimal = new JLabel("Укажи имя питомца:");

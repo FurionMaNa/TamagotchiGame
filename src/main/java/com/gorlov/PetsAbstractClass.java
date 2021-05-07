@@ -112,9 +112,10 @@ public abstract class PetsAbstractClass implements PetsInterface {
     public abstract void Draw(int logic);
 
     public void click(Integer x, Integer y) {
+        if (y > 520) return;
         clickX = x;
         clickY = y;
-        if (!mousePress && x > this.x && y > this.y && x < this.x + 100 && y < this.y + 100) {
+        if (!mousePress && x > this.x-50 && y > this.y-50 && x < this.x + 100 && y < this.y + 100) {
             mousePress = !mousePress;
         } else {
             mousePress = false;
@@ -177,11 +178,11 @@ public abstract class PetsAbstractClass implements PetsInterface {
     public void carryOver() {
         RoomClass.drawRoom(g, room);
         if (direction.equals(LEFT)) {
-            g.drawImage(carryingImageLeft, x, y, 100, 100, null);
+            g.drawImage(carryingImageLeft, x - 50, y - 50, 100, 100, null);
         } else if (direction.equals(RIGHT)) {
-            g.drawImage(carryingImageRight, x, y, 100, 100, null);
+            g.drawImage(carryingImageRight, x - 50, y - 50, 100, 100, null);
         } else if (direction.equals(FRONT)) {
-            g.drawImage(carryingImageFront, x, y, 100, 100, null);
+            g.drawImage(carryingImageFront, x - 50, y - 50, 100, 100, null);
         }
         try {
             Thread.sleep(17);
