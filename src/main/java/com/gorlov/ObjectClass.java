@@ -4,22 +4,21 @@ import java.awt.*;
 
 public class ObjectClass {
 
-    private String intemHint;
+    private String itemHint;
     private Image itemFromPanel;
     private Graphics g;
-    private static boolean mousePress = false;
     private Integer paramHP = 0;
 
 
-    public ObjectClass(String intemHint, Image itemFromPanel, Graphics g, Integer paramHP) {
-        this.intemHint = intemHint;
+    public ObjectClass(String itemHint, Image itemFromPanel, Graphics g, Integer paramHP) {
+        this.itemHint = itemHint;
         this.itemFromPanel = itemFromPanel;
         this.g = g;
         this.paramHP = paramHP;
     }
 
-    public String getIntemHint() {
-        return intemHint;
+    public String getItemHint() {
+        return itemHint;
     }
 
     public void Draw(int x, int y, int size) {

@@ -10,5 +10,6 @@ public interface PetsInterface {
     void walking(Graphics g, Image[] image, Integer offset) throws InterruptedException;
     void fall();
     void carryOver();
+    void playVoice();
 
 }

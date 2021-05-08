@@ -18,8 +18,6 @@ public class Main extends JFrame implements Runnable {
     private static PetsAbstractClass pets;
     private static int countAct = 0;
     private static int logic = 0;
-    private static Graphics g;
-    public static Image room;
     public static Thread t;
     private static Boolean gameAlive = true;
     public static ArrayList<ObjectClass> items = new ArrayList<>();
@@ -29,7 +27,6 @@ public class Main extends JFrame implements Runnable {
     public JPanel panelDraw;
 
     public Main() throws IOException {
-        room = ImageIO.read(new FileImageInputStream(new File("resources/room.png")));
         JFrame frame = new JFrame("Игра тамагочи");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -284,7 +281,6 @@ public class Main extends JFrame implements Runnable {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            Main.g = g;
         }
     }
 

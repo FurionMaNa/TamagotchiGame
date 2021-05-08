@@ -8,9 +8,8 @@ import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class DogClass extends PetsAbstractClass implements PetsInterface{
+public class DogClass extends PetsAbstractClass{
 
     private Image[] imagesWalkRight = new Image[4];
     private Image[] imagesWalkLeft = new Image[4];
@@ -42,7 +41,7 @@ public class DogClass extends PetsAbstractClass implements PetsInterface{
     }
 
     @Override
-    public synchronized void playSound() {
+    public synchronized void playVoice() {
         new Thread(() -> {
             try {
                 Clip clip = AudioSystem.getClip();

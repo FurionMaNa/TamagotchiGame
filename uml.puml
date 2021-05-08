@@ -1,0 +1,108 @@
+@startuml
+
+class CatClass{
+    private Image[] imagesWalkRight = new Image[4];
+    private Image[] imagesWalkLeft = new Image[4];
+    private Image front;
+}
+
+class DogClass{
+    private Image[] imagesWalkRight = new Image[4];
+    private Image[] imagesWalkLeft = new Image[4];
+    private Image front;
+}
+
+class ConverterJSON {
+    private final static String baseFile = "resources/user.json";
+}
+
+class InterfaceClass {
+    public static Integer hp;
+    public static Integer hunger;
+    public static Integer sleep;
+}
+
+class JsonData {
+    public Integer hp;
+    public Integer hunger;
+    public Integer sleep;
+    public Date lastSave;
+    public String name;
+    public Boolean dog;
+}
+
+class Main {
+    private final static Integer WIDTH_WINDOW = 600;
+    private final static Integer HIGHT_WINDOW = 600;
+    private static PetsAbstractClass pets;
+    private static int countAct = 0;
+    private static int logic = 0;
+    public static Thread t;
+    private static Boolean gameAlive = true;
+    public static ArrayList<ObjectClass> items = new ArrayList<>();
+    private Panel panel;
+    private String name;
+    private Boolean dog;
+    public JPanel panelDraw;
+
+}
+
+class PanelDraw {
+}
+
+class ObjectClass {
+    private String itemHint;
+    private Image itemFromPanel;
+    private Graphics g;
+    private Integer paramHP = 0;
+}
+
+class PetsAbstractClass {
+
+    protected final Integer LEFT = 0;
+    protected final Integer RIGHT = 1;
+    protected final Integer FRONT = 2;
+    private String name;
+    protected Graphics g;
+    protected Integer x = 10;
+    protected Integer y = 430;
+    protected Image room;
+    protected Integer clickX;
+    protected Integer clickY;
+    private static boolean mousePress = false;
+    protected Image fallImageRight;
+    protected Image fallImageLeft;
+    protected Image fallImageFront;
+    protected Image carryingImageRight;
+    protected Image carryingImageLeft;
+    protected Image carryingImageFront;
+    protected Image sleepImageRight;
+    protected Image sleepImageLeft;
+    public static Image ball;
+    protected Integer direction = RIGHT;
+    private boolean game = false;
+    private boolean sleep = false;
+}
+
+interface PetsInterface {
+    void sleep();
+    void move(Integer x, Integer y);
+    void walking(Graphics g, Image[] image, Integer offset) throws InterruptedException;
+    void fall();
+    void carryOver();
+    void playVoice();
+}
+
+class RoomClass {
+}
+
+CatClass <|-- PetsAbstractClass
+DogClass <|-- PetsAbstractClass
+PetsAbstractClass <|..PetsInterface
+Main *-- CatClass
+Main *-- DogClass
+Main *-- ObjectClass
+ObjectClass o-- PanelDraw
+Main *-- JsonData
+
+@enduml

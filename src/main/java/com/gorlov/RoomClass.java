@@ -4,11 +4,8 @@ import java.awt.*;
 
 public class RoomClass {
 
-    private final static Integer WIDTH_WINDOW = 600;
-    private final static Integer HIGHT_WINDOW = 600;
-
     public static synchronized void drawRoom(Graphics g,Image room){
-        g.drawImage(room,0,0,WIDTH_WINDOW, HIGHT_WINDOW,null);
+        g.drawImage(room,0,0,600, 600,null);
         InterfaceClass.Draw(g);
     }
 }

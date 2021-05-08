@@ -13,24 +13,21 @@ public abstract class PetsAbstractClass implements PetsInterface {
     protected final Integer RIGHT = 1;
     protected final Integer FRONT = 2;
     private String name;
-    private Integer satiety = 100;
-    private Integer drowsiness = 100;
-    private Integer bore = 0;
     protected Graphics g;
     protected Integer x = 10;
     protected Integer y = 430;
-    protected static Image room;
-    protected static Integer clickX;
-    protected static Integer clickY;
+    protected Image room;
+    protected Integer clickX;
+    protected Integer clickY;
     private static boolean mousePress = false;
-    protected static Image fallImageRight;
-    protected static Image fallImageLeft;
-    protected static Image fallImageFront;
-    protected static Image carryingImageRight;
-    protected static Image carryingImageLeft;
-    protected static Image carryingImageFront;
-    protected static Image sleepImageRight;
-    protected static Image sleepImageLeft;
+    protected Image fallImageRight;
+    protected Image fallImageLeft;
+    protected Image fallImageFront;
+    protected Image carryingImageRight;
+    protected Image carryingImageLeft;
+    protected Image carryingImageFront;
+    protected Image sleepImageRight;
+    protected Image sleepImageLeft;
     public static Image ball;
     protected Integer direction = RIGHT;
     private boolean game = false;
@@ -62,30 +59,6 @@ public abstract class PetsAbstractClass implements PetsInterface {
         this.name = name;
     }
 
-    public Integer getSatiety() {
-        return satiety;
-    }
-
-    public void setSatiety(Integer satiety) {
-        this.satiety = satiety;
-    }
-
-    public Integer getDrowsiness() {
-        return drowsiness;
-    }
-
-    public void setDrowsiness(Integer drowsiness) {
-        this.drowsiness = drowsiness;
-    }
-
-    public Integer getBore() {
-        return bore;
-    }
-
-    public void setBore(Integer bore) {
-        this.bore = bore;
-    }
-
     public Integer getX() {
         return x;
     }
@@ -112,7 +85,7 @@ public abstract class PetsAbstractClass implements PetsInterface {
 
     public abstract void Draw(int logic);
 
-    public abstract void playSound();
+    public abstract void playVoice();
 
     public void click(Integer x, Integer y) {
         if (y > 500) return;
@@ -149,7 +122,7 @@ public abstract class PetsAbstractClass implements PetsInterface {
             }
         }
         if (oldY < 330) {
-            playSound();
+            playVoice();
             InterfaceClass.setHp(-20);
         }
     }
@@ -217,6 +190,6 @@ public abstract class PetsAbstractClass implements PetsInterface {
                 e.printStackTrace();
             }
         }
-        if (new Random().nextInt(100) < 30) playSound();
+        if (new Random().nextInt(100) < 30) playVoice();
     }
 }
