@@ -2,9 +2,14 @@ package com.gorlov;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class CatClass extends PetsAbstractClass implements PetsInterface {
 
@@ -35,6 +40,20 @@ public class CatClass extends PetsAbstractClass implements PetsInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public synchronized void playSound()  {
+        new Thread(() -> {
+            try {
+                Clip clip = AudioSystem.getClip();
+                AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("cat.wav"));
+                clip.open(inputStream);
+                clip.start();
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        }).start();
     }
 
     @Override

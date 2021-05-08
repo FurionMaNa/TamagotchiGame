@@ -5,6 +5,7 @@ import javax.imageio.stream.FileImageInputStream;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public abstract class PetsAbstractClass implements PetsInterface {
 
@@ -111,8 +112,10 @@ public abstract class PetsAbstractClass implements PetsInterface {
 
     public abstract void Draw(int logic);
 
+    public abstract void playSound();
+
     public void click(Integer x, Integer y) {
-        if (y > 520) return;
+        if (y > 500) return;
         clickX = x;
         clickY = y;
         if (!mousePress && x > this.x-50 && y > this.y-50 && x < this.x + 100 && y < this.y + 100) {
@@ -146,6 +149,7 @@ public abstract class PetsAbstractClass implements PetsInterface {
             }
         }
         if (oldY < 330) {
+            playSound();
             InterfaceClass.setHp(-20);
         }
     }
@@ -213,5 +217,6 @@ public abstract class PetsAbstractClass implements PetsInterface {
                 e.printStackTrace();
             }
         }
+        if (new Random().nextInt(100) < 30) playSound();
     }
 }

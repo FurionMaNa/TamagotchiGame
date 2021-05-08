@@ -48,6 +48,7 @@ public class Main extends JFrame implements Runnable {
                 startGame(frame);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             newGame(frame);
         }
         frame.setVisible(true);
@@ -125,7 +126,9 @@ public class Main extends JFrame implements Runnable {
 
 
     public void newGame(JFrame frame) {
-        frame.remove(panelDraw);
+        if (panelDraw != null) {
+            frame.remove(panelDraw);
+        }
         frame.setPreferredSize(new Dimension(200, 150));
         InterfaceClass.refresh();
         panel = new Panel();
